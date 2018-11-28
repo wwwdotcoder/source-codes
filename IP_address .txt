@@ -1,0 +1,11 @@
+<script type="text/javascript">
+function httpGet(theUrl){
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}//
+
+publicIp = httpGet("https://api.ipify.org/");
+document.getElementById("IP_Address__c").value = publicIp;
+</script>
