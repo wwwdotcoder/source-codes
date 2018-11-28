@@ -1,0 +1,587 @@
+<form method="post" action="submit.php" id="Regform">
+	<div class="flt_left casa_contact_box">
+        <div class="alignBox">
+        <ul class="form_ul_tag">
+            <li class="mandFields">REGISTER NOW</li>
+            
+            </li> 
+            <li>
+                <input id="name" maxlength="80" name="name" size="22" type="text" class="n1 alignright" placeholder="Name" />                
+            <li>
+                <input id="email" maxlength="80" name="email" size="22" type="text" class="e1 alignright" placeholder="Email" onblur="chk_email();" />                
+            </li>
+			<!--li class="" style="">
+				<label for="fname" class="name are-you-a-residen">Are you an existing customer of Lodha : </label>
+				<span class="col-2-span less-padding">
+					<label for="Yes" class="name check-label">Yes : </label> <input id="Yes" maxlength="80" name="resident" size="22" type="radio" class="n1 alignright check-input" placeholder="" tabindex="3" value="Yes">
+				</span>
+				<span class="col-2-span less-padding">
+					<label for="No" class="name check-label">No : </label> <input id="No" maxlength="80" name="resident" size="22" type="radio" class="n1 alignright check-input" placeholder="" tabindex="4" value="No" checked>
+				</span>
+			</li-->            
+            <li class="mobTab" id="mobTab">
+				<input id="mobile" name="mobile" class="mobile_no_get m2" size="10" type="number" placeholder="Mobile" onblur="chk_mob();" />
+            </li>         
+            <li class="crnTab" id="crnTab">
+				<input id="crn" name="crn" class="mobile_no_get m2" size="10" type="number" placeholder="CRN" onblur="chk_crn();" />
+            </li>
+            
+			<li>
+			<select id="dates" name="date" class="country c1 alignright" onchange="return chk_date()">
+				<option value="">-- Select Date --</option>
+				<option value="17th Feb 2018" id="date1">17th Feb 2018</option>
+				<option value="18th Feb 2018" id="date2">18th Feb 2018</option>				
+			</select>
+            </li>
+			
+			<li>
+			<select id="times" name="time" class="country c1 alignright" onchange="return chk_time()">
+				<option value="" id="time0">-- Select Time --</option>
+				<option value="10:00 AM to 11:30 AM" id="time1">10:00 AM to 11:30 AM</option>
+				<option value="12:00 PM to 01:30 PM" id="time2">12:00 PM to 01:30 PM</option>
+				<option value="02:00 PM to 03:30 PM" id="time3">02:00 PM to 03:30 PM</option>
+				<option value="04:00 PM to 05:30 PM" id="time4">04:00 PM to 05:30 PM</option>			
+			</select>
+            </li>			
+			<li>
+			<select id="paxs" name="paxs" class="country c1 alignright">
+				<option value="" id="pax0">-- Select No of Attendees --</option>
+				<option value="1" id="pax1">1</option>
+				<option value="2" id="pax2">2</option>
+				<option value="3" id="pax3">3</option>
+				<option value="4" id="pax4">4</option>
+			</select>
+            </li>
+			
+            <li class="btnRow">
+                <input class="button submit" id="SubmitButton" type="submit" value="Submit &#10095;"/>
+            </li>
+        </ul>
+    </div>  
+</div>
+<?php 
+// get width and height
+
+/* $width = $_COOKIE['width'];
+$height = $_COOKIE['height'];
+
+$resolution = $width.'*'. $height; */
+  
+//landing page url
+
+$landing_page_url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+// get browser detail 
+
+$agent = $_SERVER['HTTP_USER_AGENT']; 
+// Get the user Browser now -----------------------------------------------------
+// Create the Associative Array for the browsers we want to sniff out
+$browserArray = array(
+        'Windows Mobile' => 'IEMobile',
+		'Android Mobile' => 'Android',
+		'iPhone Mobile' => 'iPhone',
+		'Firefox' => 'Firefox',
+        'Google Chrome' => 'Chrome',
+        'Internet Explorer' => 'MSIE',
+        'Opera' => 'Opera',
+        'Safari' => 'Safari'
+); 
+foreach ($browserArray as $k => $v) {
+
+    if (preg_match("/$v/", $agent)) {
+         break;
+    }	else {
+	 $k = "Browser Unknown";
+    }
+} 
+$browser = $k;
+
+// Get the user OS now ------------------------------------------------------------
+// Create the Associative Array for the Operating Systems to sniff out
+$osArray = array(
+        'Windows 98' => '(Win98)|(Windows 98)',
+        'Windows 2000' => '(Windows 2000)|(Windows NT 5.0)',
+		'Windows ME' => 'Windows ME',
+        'Windows XP' => '(Windows XP)|(Windows NT 5.1)',
+        'Windows Vista' => 'Windows NT 6.0',
+        'Windows 7' => '(Windows NT 6.1)|(Windows NT 7.0)',
+        'Windows NT 4.0' => '(WinNT)|(Windows NT 4.0)|(WinNT4.0)|(Windows NT)',
+		'Linux' => '(X11)|(Linux)',
+		'Mac OS' => '(Mac_PowerPC)|(Macintosh)|(Mac OS)'
+); 
+foreach ($osArray as $k => $v) {
+
+    if (preg_match("/$v/", $agent)) {
+         break;
+    }	else {
+	 $k = "Unknown OS";
+    }
+} 
+$os = $k;
+// At this point you can do what you wish with both the OS and browser acquired
+
+// Function to get the client ip address
+//$ip=$_SERVER['REMOTE_ADDR'];
+
+// To detect device ie: mobile, tab or pc
+
+$tablet_browser = 0;
+$mobile_browser = 0;
+ 
+if (preg_match('/(tablet|ipad|playbook)|(android(?!.*(mobi|opera mini)))/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
+    $tablet_browser++;
+}
+ 
+if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|android|iemobile)/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
+    $mobile_browser++;
+}
+ 
+if ((strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))) {
+    $mobile_browser++;
+}
+ 
+$mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
+$mobile_agents = array(
+    'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
+    'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
+    'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
+    'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
+    'newt','noki','palm','pana','pant','phil','play','port','prox',
+    'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
+    'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
+    'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
+    'wapr','webc','winw','winw','xda ','xda-');
+ 
+if (in_array($mobile_ua,$mobile_agents)) {
+    $mobile_browser++;
+}
+ 
+if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'opera mini') > 0) {
+    $mobile_browser++;
+    //Check for tablets on opera mini alternative headers
+    $stock_ua = strtolower(isset($_SERVER['HTTP_X_OPERAMINI_PHONE_UA'])?$_SERVER['HTTP_X_OPERAMINI_PHONE_UA']:(isset($_SERVER['HTTP_DEVICE_STOCK_UA'])?$_SERVER['HTTP_DEVICE_STOCK_UA']:''));
+    if (preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $stock_ua)) {
+      $tablet_browser++;
+    }
+}
+ 
+if ($tablet_browser > 0) {
+   // do something for tablet devices
+   $device = 'tablet';
+}
+else if ($mobile_browser > 0) {
+   // do something for mobile devices
+    $device = 'mobile';
+}
+else { 
+   // do something for everything else
+    $device = 'desktop';
+}   
+
+// To detect device name of user
+
+require_once 'mobile_detect.php';
+$detect = new Mobile_Detect;
+
+$deviceType = ($detect->isMobile() ? ($detect->isTablet() ? 'tablet' : 'phone') : 'computer');
+$scriptVersion = $detect->getScriptVersion();
+
+?>
+  
+
+<!--URL Tagging	form fields -- >
+<input 	type="hidden" name="Banner_Size__c" id="Banner_Size__c" value="<?php //echo $banner_size; ?>">
+<input  type="hidden" name="Digital_Source__c" id="Digital_Source__c" value="<?php //echo $digital_source; ?>">	
+<input  type="hidden" name="Digital_Medium__c" id="Digital_Medium__c" value="<?php //echo $digital_medium; ?>">
+<input  type="hidden" name="Keyword__c" id="Keyword__c" value="<?php //echo $keyword; ?>">
+<input  type="hidden" name="Placement__c" id="Placement__c" value="<?php //echo $placement; ?>">
+<input  type="hidden" name="Adgroup__c" id="Adgroup__c" value="<?php //echo $adgroup; ?>">	
+<input  type="hidden" name="Adposition__c" id="Adposition__c" value="<?php //echo $adposition; ?>">	
+<input  type="hidden" name="Matchtype__c" id="Matchtype__c" value="<?php //echo $matchtype; ?>">	
+<input  type="hidden" name="Network__c" id="Network__c" value="<?php //echo $network; ?>">
+<input  type="hidden" name="GCLID__c" id="GCLID__c" value="<?php //echo $gclid; ?>">
+<input  type="hidden" name="Visitor_Type__c" id="Visitor_Type__c" value="<?php //echo $visitor_type; ?>">
+ 
+
+<!--  Form Code fields  -- >
+<input 	type="hidden" name="Browser__c" id="Browser__c" value="<?php //echo $browser;?>">	
+<input  type="hidden" name="Device__c" id="Device__c" value="<?php //echo $device;?>">	
+<input  type="hidden" name="Device_Name__c" id="Device_Name__c" value="<?php //echo $deviceType;?>">	
+<input  type="hidden" name="First_Visit__c" id="First_Visit__c" value="<?php //echo $_COOKIE["First_Visit__c"];?>">	
+<input  type="hidden" name="Form_Tracker__c" id="Form_Tracker__c" value="Form_Tracker__c">	
+<input  type="hidden" name="Landing_Page_URL__c" id="Landing_Page_URL__c" value="<?php //echo $landing_page_url; ?>">	
+<input  type="hidden" name="OS__c" id="OS__c" value="<?php //echo $os;?>">	
+<input  type="hidden" id="Resolution__c" name="Resolution__c" value="">	
+<input 	type="hidden" id="Time_Spent_before_Form_Submit__c" name="Time_Spent_before_Form_Submit__c" value="">	
+<input  type="hidden" name="Visit_Duration__c" id="Visit_Duration__c" value="Visit_Duration__c" -->
+<input  type="hidden" name="outlead" id="outlead" value="No" />
+<input  type="hidden" name="IP_Address__c" id="IP_Address__c" value="" />
+<input  type="hidden" name="Eflag" id="Eflag" value="" />		
+<input  type="hidden" name="Mflag" id="Mflag" value="Green" />		
+<input  type="hidden" name="Cflag" id="Cflag" value="Green" />
+<span style="display:none;" class="booked"><?php echo $paxs['Paxs']; ?></span>
+</form>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+<script type="text/javascript">
+  document.getElementById('IP_Address__c').value = userip;
+</script>
+<script type="text/javascript">
+var $ =jQuery.noConflict();
+$(function(){
+/* var width = screen.width;
+var height = screen.height;
+var resolution = width +"*"+height;
+$("#Resolution__c").val(resolution);//Screen Resolution	
+
+var now  = "'"+datetime+"'";	
+var then = "'"+onload_datetime+"'";
+var diff = moment.utc(moment(now,"DD-MM-YYYY HH:mm:ss").diff(moment(then,"DD-MM-YYYY HH:mm:ss"))).format("HH:mm:ss");
+$("#Time_Spent_before_Form_Submit__c").val(diff);
+ */
+ 
+//$("#crnTab").hide();//default hide CRN
+$("#times").prop("disabled", true);
+$("#paxs").prop("disabled", true);
+
+//Validation form	
+$.validator.addMethod(
+	 "regex",
+	 function(value, element, regexp) 
+	 {
+		 if (regexp.constructor != RegExp)
+			 regexp = new RegExp(regexp);
+		 else if (regexp.global)
+			 regexp.lastIndex = 0;
+		 return this.optional(element) || regexp.test(value);
+	 },
+	 "Please enter valid your name."    
+);
+$("#Regform").validate({
+
+	// Specify the validation rules
+	rules: {
+		name: {
+			required: true,
+			regex: /^[a-zA-Z ]*$/,
+			//alpha: true,
+			//regex: /^[a-zA-Z\s]*$/
+		},
+		email: {
+			required: true,
+			email: true
+		},
+		resident: "required",
+		crn:{
+			//required:true,
+			minlength:7,
+			maxlength:7,
+			digits: true,
+		},
+		mobile:{
+			//required:true,
+			minlength:10,
+			maxlength:10,
+			digits: true,
+		},
+		paxs: "required",
+		date: "required",
+		time: "required"
+	},
+	// Specify the validation error messages
+	messages: {
+		name: {
+			required: "<span class='text-danger'>Please enter your name</span>",
+			regex: "<span class='text-danger'>Please enter letter only</span>"
+		},
+		email: "<span class='text-danger'>Please enter a valid email address</span>",
+		resident:"<span class='text-danger rsi'>Please select Resident</span>",
+		mobile: "<span class='text-danger'>Please enter a valid mobile number of 10 digits</span>",
+		crn: "<span class='text-danger'>Please enter a valid CRN</span>",
+		paxs: "<span class='text-danger'>Please select No of Attendees</span>",			
+		date: "<span class='text-danger'>Please select Date</span>",			
+		time: "<span class='text-danger'>Please select Time</span>"			
+		},
+  
+	submitHandler: function(form){		
+//alert($('#Yes').is(':checked')+' <<< Y/N  '+''+$("#Eflag").val()+' <<Ef '+$("#Cflag").val()+' << Cf '+$("#Mflag").val()+' << Mf ');
+
+		if($("#Eflag").val() == "Green" && $("#Cflag").val() == "Green" && $("#Mflag").val() == "Green"){		
+			form.submit();
+			return true;			
+		}else{				
+			alert("You are already registered with us !");
+			return false;
+		}
+	}	
+});
+
+/* $('#Yes').click(function() {
+	if($(this).is(':checked')){
+		$("#crnTab").show();
+		$("#mobTab").hide();
+		
+	}
+});
+$('#No').click(function() {
+	if($(this).is(':checked')){
+		$("#mobTab").show();
+		$("#crnTab").hide();
+	}
+}); */
+	
+});//EOFun
+  
+function chk_email(){
+	if($("#email").val() !=""){
+		
+		$.ajax({
+			type: "POST",
+			url: "chk_email.php",// check exiting mobile no
+			data: { 
+					"email" : $("#email").val(),
+				},
+				success: function (data_email){
+					//console.log(data_email);					
+					if(data_email == 0){
+						$("#Eflag").val("Green");
+					}else{
+						$("#Eflag").val("Red");
+						alert("You are already registered with us by E-mail !");
+					}
+				}   	
+		});
+	}	
+}//Email
+  
+function chk_crn(){
+	if($("#crn").val() != ""){
+	$.ajax({
+			type: "POST",
+			url: "chk_crn.php",// check exiting mobile no
+			data: { 
+					"crn" : $("#crn").val(),
+				},
+				success: function (data_crm) {
+					//console.log(data_crm);					
+					if(data_crm == 0){
+						$("#Cflag").val("Green");
+					}else{
+						alert("You are already registered with us by CRN !");
+						$("#Cflag").val("Red");
+					}
+				}   	
+		});
+	}else{
+		$("#Cflag").val("Green");
+	}	
+}//CRN
+
+function chk_mob(){
+	if($("#mobile").val() != ""){
+	$.ajax({
+			type: "POST",
+			url: "chk_mob.php",// check exiting mobile no
+			data: { 
+					"mobile" : $("#mobile").val(),
+				},
+				success: function (data_mob) {
+					//console.log(data_mob);					
+					if(data_mob == 0){
+						$("#Mflag").val("Green");
+					}else{
+						alert("You are already registered with us by Mobile !");
+						$("#Mflag").val("Red");
+					}
+				}   	
+		});
+	}else{
+		$("#Mflag").val("Green");
+	}		
+}//Mobile 
+
+function chk_date(){
+//alert($("#dates").val());
+$("#time0").prop("selected", true);
+$("#pax0").prop("selected", true);
+
+	if($("#dates").val() !=""){
+		$("#times").prop("disabled", false);
+		$("#times").prop("selected", false);
+			
+		$.ajax({
+			type: "POST",
+			url: "chk_date.php",// check time of date
+			dataType: 'json',
+			data: { 
+					"date" : $("#dates").val(),
+				},
+				success: function (data_date){
+					//console.log(data_date);
+					var l = data_date.length; // max = 4
+					var i = 0;
+					var all = 0;
+					//alert(l+' --length');
+					if(l == 0){
+						$("#time1").prop("disabled", false);
+						$("#time2").prop("disabled", false);
+						$("#time3").prop("disabled", false);
+						$("#time4").prop("disabled", false);
+					}else{						
+						while(l >= i){
+							if(data_date[i][0] == "10:00 AM to 11:30 AM" && data_date[i][1] >= 15){
+								$("#time1").prop("disabled", true);
+								all++;
+							}else{
+								$("#time1").prop("disabled", false);	
+							}
+							if(data_date[i][0] == "12:00 PM to 01:30 PM" && data_date[i][1] >= 15){
+								$("#time2").prop("disabled", true);
+								all++;								
+							}else{
+								$("#time2").prop("disabled", false);	
+							}
+							if(data_date[i][0] == "02:00 PM to 03:30 PM" && data_date[i][1] >= 15){
+								$("#time3").prop("disabled", true);
+								all++;
+							}else{
+								$("#time3").prop("disabled", false);	
+							}
+							if(data_date[i][0] == "04:00 PM to 05:30 PM" && data_date[i][1] >= 15){
+								$("#time4").prop("disabled", true);							
+								all++;
+							}else{
+								$("#time4").prop("disabled", false);	
+							}
+							
+							//alert(all);
+							if(all == 4){
+								$("#outlead").val("Yes");
+								alert($("#dates").val()+" on seat not available. Please check another date !");
+								
+								if($("#dates").val() == "17th Feb 2018"){
+									$("#date1").prop("disabled", true);									
+								}
+								if($("#dates").val() == "18th Feb 2018"){
+									$("#date2").prop("disabled", true);									
+								}
+								
+								$("#times").hide();
+								$("#paxs").hide();
+								
+							}else{
+								$("#outlead").val("No");
+								$("#paxs").show();
+								$("#times").show();
+							}
+							
+						i++;
+						}//END While
+					}//END IF ELSE
+				}   	
+		});
+	}else{
+		//$("#times").prop("selected", false);
+		$("#times").prop("disabled", true);
+	}	
+}//date 
+
+function chk_time(){
+$("#pax0").prop("selected", true);	
+
+	if($("#dates").val() != "" && $("#times").val() != ""){
+		$("#paxs").prop("disabled", false);
+		//$("#paxs").prop("selected", false);
+		
+		$.ajax({
+			type: "POST",
+			url: "chk_time.php",// check exiting mobile no
+			data: { 
+					"date" : $("#dates").val(), "time" : $("#times").val(),
+				},
+				success: function (data_time){
+					//console.log(data_time);
+					if(data_time == ''){
+						$("#pax1").show();
+						$("#pax2").show();
+						$("#pax3").show();
+						$("#pax4").show();
+					}else{
+						var pax = 15 - data_time;
+						//alert(pax);
+						if(pax == 1){							
+							$("#pax1").show();
+							$("#pax2").hide();
+							$("#pax3").hide();
+							$("#pax4").hide();
+						}else if(pax == 2){							
+							$("#pax1").show();
+							$("#pax2").show();
+							$("#pax3").hide();
+							$("#pax4").hide();
+						}else if(pax == 3){							
+							$("#pax1").show();
+							$("#pax2").show();
+							$("#pax3").show();
+							$("#pax4").hide();
+						}else{							
+							$("#pax1").show();
+							$("#pax2").show();
+							$("#pax3").show();
+							$("#pax4").show();
+						}
+					}
+				}
+		});
+	}else{
+		//$("#paxs").prop("selected", false);
+		$("#paxs").prop("disabled", true);
+	}
+}//time
+
+/* function goNotConfirm(){
+	if($("#paxs").val() !="" && $("#dates").val() != "" && $("#times").val() != ""){
+		$.ajax({
+			type: "POST",
+			url: "notConfirm.php",// check exiting mobile no
+			data: { 
+					"pax" : $("#paxs").val(), "date" : $("#dates").val(), "time" : $("#times").val(),
+				},
+				success: function (data_pax) {
+					console.log(data_pax);
+					return false;
+					if(data_pax == 'nocopy'){
+						$("#flag").val("Green");
+					}else{
+						alert("You are already registered with us by E-mail !");
+						$("#flag").val("Red");
+					}
+				}   	
+		});
+	}	
+}//insert Not Confirm */
+
+/* function getPaxExist(){
+	if($("#paxs").val() !="" && $("#dates").val() != "" && $("#times").val() != ""){
+		$.ajax({
+			type: "POST",
+			url: "chk_pax.php",// check exiting mobile no
+			data: { 
+					"pax" : $("#paxs").val(), "date" : $("#dates").val(), "time" : $("#times").val(),
+				},
+				success: function (data_pax) {
+					console.log(data_pax);
+					return false;
+					if(data_pax == 'nocopy'){
+						$("#flag").val("Green");
+					}else{
+						alert("You are already registered with us by E-mail !");
+						$("#flag").val("Red");
+					}
+				}   	
+		});
+	}	
+}//paxExist */
+</script>
