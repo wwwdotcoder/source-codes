@@ -1,0 +1,35 @@
+
+/* ****************** OTP ********************* */
+function otpSend(){
+	varCode = getRandomNumber();
+	alert('OTP send = '+varCode);
+}
+
+function SendvarificationSMS(mobilenumber, varcode){
+	var msgurl = null;
+	msgurl = "https://www.domainName.com/OTP/"; 
+	try {
+		$.ajax({
+			type: "POST",
+			url: msgurl,
+			cache: false,
+			dataType: "jsonp",
+			data: {"mobilenumber" : mobilenumber , "varcode" : varcode},
+			success: function(data) {
+				console.log(data);
+				alert(data[1]);
+			}
+		});
+	} catch (err) {}
+	alert('Please enter the 4-digit verification code sent on your mobile into the highlighted field and submit your enquiry.');
+	return true;
+}
+
+function validateConfCode() {
+	if (($((tallowmobileverification)).val() == "true") && ($((tCountryList)).val() == "India")) {
+		if ($((tCountryList)).val() == "India" && (!MobileNumberIndia() || $((tConfCode)).val().length == 0)) {
+			return false;
+		}
+	}
+	return true;
+}
