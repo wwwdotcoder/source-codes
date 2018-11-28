@@ -1,0 +1,158 @@
+var projectID = '00ND00000039gka';
+var name = 'last_name';
+var email = 'email';
+
+
+
+jQuery(function(){
+	$.validator.addMethod(
+             "regex",
+             function(value, element, regexp){
+                 if (regexp.constructor != RegExp)
+                     regexp = new RegExp(regexp);
+                 else if (regexp.global)
+                     regexp.lastIndex = 0;
+                 return this.optional(element) || regexp.test(value);
+             },
+             "Please check your name."    
+	    );
+       // Setup form validation on the #register-form element	
+    jQuery("#contact-form").validate({
+    
+        // Specify the validation rules
+        rules: {
+            last_name: {
+                required: true,
+                regex: /^[a-zA-Z ]*$/,
+				minlength: 2
+            },
+			email: {
+                required: true,
+                email: true,
+            },
+			mobile:{
+				required:true,
+				minlength:7,
+				maxlength:11,
+				digits: true,
+			},				
+			name1:{	
+					required: function(){
+					return jQuery("#relation1").val().length > 0;
+				},
+			},	
+   			mobile1:{				
+				required: function(){
+					return jQuery("#name1").val().length > 0;
+				},
+				minlength:10,
+				maxlength:10,
+				digits: true,
+   			},   			
+   			relation5:{				
+				required: function(){
+					return jQuery("#name5").val().length > 0;
+				},
+				required: function(){
+					return jQuery("#mobile5").val().length > 0;
+				},
+			},	
+			
+        },
+        
+        // Specify the validation error messages
+        messages: {
+            last_name: {
+                required: '* Please enter your name',
+                regex: '* Please enter valid name, use letters only',
+				minlength: "* Please enter a valid name"
+            },
+			 email: {
+                required: "Please enter a valid E-mail ID",
+			},
+			mobile: {
+                required: "Please enter a valid Mobile Number",
+				digits: "Please enter a valid Mobile Number"
+			},			
+			mobile5: {
+                required: "Please enter a valid Mobile Number",
+				digits: "Please enter a valid Mobile Number"
+			}
+			},			
+			submitHandler: function(form) {
+				form.submit(); 
+				return true;
+				/* if(jQuery("#crn_flag").val() == "true"){
+				
+				}else{				
+					alert("Your CRN No. is already registered for the event");
+					return false;
+				} */ 
+			}		
+    });//validation
+ 
+var value=3;
+
+jQuery('#Refadd').on('click', function(){
+	var $looking = jQuery('select#looking');
+    var $selfs = jQuery('#appendinputs');
+  
+	$selfs.append(function () {
+    var output = '';
+	
+	if(value < 6){
+		output += '<div class="form-group"><label class="col-md-3 colon-symble">Reference '+value+'</label><div class="col-md-8" style="padding: 0px;"><div class="col-md-4 refer-bottom-space"><input type="text" name="name'+value+'" id="name'+value+'" placeholder="Name" class="form-control"></div><div class="col-md-4 refer-bottom-space"><input type="number" name="mobile'+value+'" id="mobile'+value+'" placeholder="Mobile" class="form-control"></div><div class="col-md-4 refer-bottom-space"><select class="form-control" id="relation'+value+'" name="relation'+value+'"><option value="">-- Relation --</option><option value="Friend">Friend</option><option value="Family Member">Family Member</option><option value="Colleague">Colleague</option></select></div></div></div>';
+    }
+    value++;
+	return output;
+    });
+});
+
+});//EODr
+
+
+
+
+
+
+
+
+
+	/* Get Country Code */
+			var CountryName = jQuery(COUNTRY).val();
+			/* Get mobile number */
+			var MobileNumber = jQuery(MOBILE).val();			
+			alert(CountryName+'  '+MobileNumber);
+			return false;
+			
+		/* Mobile validate respected Country */
+		if (CountryName == "USA" || CountryName == "Canada" || CountryName == "India") {
+			if (MobileNumber.length < 10 || MobileNumber.length > 10) {
+				alert("Please enter valid mobile no.");
+				return false;
+			}
+		}
+		if (CountryName == "United Kingdom") {
+			if (MobileNumber.length < 10 || MobileNumber.length > 11) {
+				alert("Please enter valid mobile no.");
+				return false;
+			}
+		}
+		if (CountryName == "United Arab Emirates" || CountryName == "Kenya" || CountryName == "Saudi Arabia") {
+			if (MobileNumber.length < 9 || MobileNumber.length > 9) {
+				alert("Please enter valid mobile no.");
+				return false;
+			}
+		}
+		if (CountryName == "Hong Kong" || CountryName == "Singapore") {
+			if (MobileNumber.length < 8 || MobileNumber.length > 8) {
+				alert("Please enter valid mobile no.");
+				return false;
+			}
+		}
+		if (CountryName == "Kuwait") {
+			if (MobileNumber.length < 7 || MobileNumber.length > 8) {
+				alert("Please enter valid mobile no.");
+				return false;
+			}
+		}	
