@@ -1,0 +1,28 @@
+$https = $_SERVER["HTTPS"] == 'on' ? 'https://':'http://';
+define('BASE_URL',$https.$_SERVER['HTTP_HOST']);
+
+
+if($_SERVER['QUERY_STRING'] != '') $Qstr = "?".$_SERVER['QUERY_STRING'];
+
+$HTTP = $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://';
+
+var HTTP  = window.location.protocol;// http | https 
+
+if (location.protocol != 'https:'){
+  
+}
+
+
+define('BASE_URL',$_SERVER['HTTP_HOST']);
+
+
+<script type="text/javascript">
+function httpGet(theUrl){
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}//
+publicIp = httpGet("https://api.ipify.org/");
+document.getElementById("IP_Address__c").value = publicIp;
+</script>
