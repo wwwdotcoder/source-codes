@@ -1,0 +1,3 @@
+$msg = str_replace(',',' ',$row['message']);
+$remove = array("\n", "\r\n", "\r");
+$message = str_replace($remove, ' ', $msg);
